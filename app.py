@@ -89,7 +89,7 @@ try:
     fig5.update_yaxes(showgrid = False)
     fig6.update_xaxes(showgrid = False)
     fig6.update_yaxes(showgrid = False)
-    if fig_spe:
+    if category:
         fig_spe.update_xaxes(showgrid = False)
         fig_spe.update_yaxes(showgrid = False)
 
