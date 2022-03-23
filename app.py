@@ -15,7 +15,7 @@ data = dict(
         type = 'choropleth',
         locations = country_wise_count.index,
         z = country_wise_count.values,
-        text = list(country_wise_count.index),
+        text = list(df.country.value_counts().index),
         colorbar = {'title' : 'Number of records found'},
       )
 layout = dict(
@@ -40,16 +40,42 @@ wine_price = new_df[(new_df.price >= 14) & (new_df.price <= 42)][['wine', 'price
 wnry_agg = winery_price.groupby('winery').agg({'price' : 'mean'})
 
 try:
-    fig1 = px.line(new_df,y='price' ,color='category', markers=True)
-    fig2 = px.line(new_df,y='price' ,color='designation', markers=True)
-    fig3 = px.line(wnry_agg, markers=True)
-    fig4 = px.bar(top_wineries[::-1], orientation='h')
+    fig1 = px.line(new_df,y='price' ,color='category', markers=True, title="Price for different categories", labels={
+            'price' : 'price ($)',
+            'category' : 'wine category'
+        }
+    )
+
+    fig2 = px.line(new_df,y='price' ,color='designation', markers=True, title="Price for different designations", labels={
+            'price' : 'price ($)'
+        }
+    )
+    fig3 = px.line(wnry_agg, markers=True, title="Average price of selected wineries", labels={
+            'value' : 'price ($)'
+        }
+    )
+    fig4 = px.bar(top_wineries[::-1], orientation='h', title="Distribution of reviews of wineries", labels= {
+            'index' : 'winery',
+            'value' : 'count'
+        }
+    )
     fig5 = px.pie(tt, values=tt.values, names=tt.index, title='Presence of wineries in the dataset')
-    fig6 = px.bar(new_df.category.value_counts()[::-1], orientation='h')
+    fig6 = px.bar(new_df.category.value_counts()[::-1], orientation='h', title="Categories offered by the selected wineries.", labels= {
+            'index' : 'category',
+            'value' : 'count'
+        }
+    )
     fig7 = go.Figure(data = [data],layout = layout)
+    fig7.update_layout(
+        title = "Geoplot of the reviews in our dataset"
+    )
     if category:
         df_spe = df[df.category.isin(category)]
-        fig_spe = px.bar(df_spe.category.value_counts(), orientation='h')
+        fig_spe = px.bar(df_spe.category.value_counts(), orientation='h', title="Distribution of selected categories", labels= {
+                'index' : 'category',
+                'value' : 'count'
+            }
+        )
 
     fig1.update_xaxes(showgrid = False)
     fig1.update_yaxes(showgrid = False)
@@ -69,14 +95,14 @@ try:
 
 
     st.plotly_chart(fig1, use_container_width=True)
-    st.plotly_chart(fig6)
+    st.plotly_chart(fig6, use_container_width=True)
     if fig_spe:
         # print(df_spe.category.value_counts())
         st.plotly_chart(fig_spe, use_container_width=True)
     st.plotly_chart(fig2, use_container_width=True)
     st.plotly_chart(fig3, use_container_width=True)
-    st.plotly_chart(fig4)
-    st.plotly_chart(fig5)
+    st.plotly_chart(fig4, use_container_width=True)
+    st.plotly_chart(fig5, use_container_width=True)
     st.plotly_chart(fig7, use_container_width=True)
 
 except KeyError as e:
