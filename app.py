@@ -94,16 +94,17 @@ try:
         fig_spe.update_yaxes(showgrid = False)
 
 
-    st.plotly_chart(fig1, use_container_width=True)
-    st.plotly_chart(fig6, use_container_width=True)
-    if fig_spe:
-        # print(df_spe.category.value_counts())
-        st.plotly_chart(fig_spe, use_container_width=True)
-    st.plotly_chart(fig2, use_container_width=True)
-    st.plotly_chart(fig3, use_container_width=True)
-    st.plotly_chart(fig4, use_container_width=True)
-    st.plotly_chart(fig5, use_container_width=True)
-    st.plotly_chart(fig7, use_container_width=True)
+    if wineries:
+        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig6, use_container_width=True)
+        if category:
+            # print(df_spe.category.value_counts())
+            st.plotly_chart(fig_spe, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig5, use_container_width=True)
+        st.plotly_chart(fig7, use_container_width=True)
 
 except KeyError as e:
     print(e)
