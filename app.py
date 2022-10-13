@@ -9,15 +9,7 @@ import plotly.graph_objs as go
 
 
 df = st.cache(pd.read_csv)('clean_winesV2.csv')
-country_wise_count = df['country_code'].value_counts()
 
-data = dict(
-        type = 'choropleth',
-        locations = country_wise_count.index,
-        z = country_wise_count.values,
-        text = list(df.country.value_counts().index),
-        colorbar = {'title' : 'Number of records found'},
-      )
 layout = dict(
     title = 'Country-wise wine records',
     geo = dict(
@@ -65,6 +57,15 @@ try:
             'value' : 'count'
         }
     )
+
+    country_wise_count = new_df['country_code'].value_counts()
+    data = dict(
+        type = 'choropleth',
+        locations = country_wise_count.index,
+        z = country_wise_count.values,
+        text = list(new_df.country.value_counts().index),
+        colorbar = {'title' : 'Number of records found'},
+      )
     fig7 = go.Figure(data = [data],layout = layout)
     fig7.update_layout(
         title = "Geoplot of the reviews in our dataset"
